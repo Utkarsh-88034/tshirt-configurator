@@ -9,14 +9,17 @@ import {
   useGLTF,
   useTexture,
 } from "@react-three/drei";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import RenderImage from "./RenderImage";
 
 const RenderFront = () => {
-  const { scene, nodes } = useGLTF("/tee-center-uv2.glb");
+  const { nodes } = useGLTF("/tee-center-uv2.glb");
 
+  const dragControlsRef = useRef();
   const texture = useTexture("/stripes.svg");
   const bgtexture = useTexture("/baked-stripes-front.png");
+
   bgtexture.flipY = false;
 
   return (
@@ -31,24 +34,16 @@ const RenderFront = () => {
               position={[0, 0, 3]}
             />
             <ambientLight intensity={2} />
-            <DragControls>
-              <Image
-                url="123.png"
-                opacity={1}
-                side={THREE.DoubleSide}
-                segments={1}
-                scale={1}
-              >
-                <Edges linewidth={3} scale={1.01} threshold={15} color="blue" />
-              </Image>
-            </DragControls>
+
+            <RenderImage position={[0, -1, 0]} />
+            <RenderImage position={[0, 0, 0]} />
           </RenderTexture>
         </meshPhysicalMaterial>
         <mesh geometry={nodes["70_1"].geometry}>
           <meshPhysicalMaterial map={bgtexture} />
         </mesh>
       </mesh>
-      <mesh geometry={nodes["64_1"].geometry}>
+      {/* <mesh geometry={nodes["64_1"].geometry}>
         <meshPhysicalMaterial>
           <RenderTexture
             attach="map"
@@ -86,7 +81,7 @@ const RenderFront = () => {
         </meshPhysicalMaterial>
       </mesh>
       <mesh geometry={nodes["31_1"].geometry}></mesh>
-      <mesh geometry={nodes["28_1"].geometry}></mesh>
+      <mesh geometry={nodes["28_1"].geometry}></mesh> */}
     </>
   );
 };
